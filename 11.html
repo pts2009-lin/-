@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医疗卫生监督科工作管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 20px 0 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a5276, #2980b9);
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .main-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sub-title {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .china-health-logo {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #1a5276;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .btn {
+            height: 100px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0.1));
+            z-index: 1;
+        }
+        
+        .btn i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn span {
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+        }
+        
+        .btn-subtitle {
+            font-size: 0.7rem;
+            font-weight: normal;
+            margin-top: 3px;
+            opacity: 0.9;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-query {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+        }
+        
+        .btn-register {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+        }
+        
+        .btn-punish {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+        }
+        
+        .btn-supervise {
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+        }
+        
+        .btn-data {
+            background: linear-gradient(145deg, #f1c40f, #f39c12);
+        }
+        
+        .btn-archive {
+            background: linear-gradient(145deg, #1abc9c, #16a085);
+        }
+        
+        .btn-system {
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+        }
+        
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .developer-info {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #95a5a6;
+        }
+        
+        .quick-access {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .quick-btn {
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .quick-btn i {
+            margin-right: 8px;
+        }
+        
+        .quick-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 工具提示样式 */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: pre-line;
+            z-index: 10;
+            margin-bottom: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            width: max-content;
+            max-width: 250px;
+            text-align: left;
+            line-height: 1.4;
+        }
+        
+        .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 执法证号弹窗样式 */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .certificate-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+        
+        .certificate-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1a5276;
+        }
+        
+        .certificate-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            margin: 10px 0;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(145deg, #2980b9, #1a5276);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .sub-title {
+                font-size: 1.1rem;
+            }
+            
+            .btn-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .china-health-logo {
+                width: 50px;
+                height: 50px;
+                top: 15px;
+                left: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                height: 90px;
+            }
+            
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .sub-title {
+                font-size: 1rem;
+            }
+            
+            .quick-access {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quick-btn {
+                width: 80%;
+                justify-content: center;
+            }
+            
+            .china-health-logo {
+                width: 40px;
+                height: 40px;
+                top: 12px;
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- 中国卫生监督动态图标 -->
+            <img src="https://img.rednet.cn/2020/02-01/f886a044-a4a7-4577-8a41-a6ad7a9c0fcb.gif" alt="中国卫生监督" class="china-health-logo">
+            
+            <h1 class="main-title">医疗卫生监督科工作管理系统</h1>
+            <div class="sub-title">宝安区公共卫生服务福永分中心</div>
+        </div>
+        
+        <div class="quick-access">
+            <a href="https://www.kdocs.cn/l/cp6PSw11IPly" class="quick-btn tooltip" target="_blank" data-tooltip="密码科室电话"><i class="fas fa-calendar-alt"></i> 工作计划</a>
+            <a href="https://www.kdocs.cn/l/cp6PSw11IPly" class="quick-btn tooltip" target="_blank" data-tooltip="密码科室电话"><i class="fas fa-tasks"></i> 工作梳理</a>
+            <a href="#" class="quick-btn"><i class="fas fa-cog"></i> 系统设置</a>
+            <a href="#" class="quick-btn" id="certificate-btn"><i class="fas fa-id-card"></i> 执法证号</a>
+        </div>
+        
+        <!-- 执法证号弹窗 -->
+        <div class="certificate-modal" id="certificate-modal">
+            <div class="certificate-content">
+                <h3 class="certificate-title">选择执法证号</h3>
+                <button class="certificate-btn" id="qian-certificate">钱执法证</button>
+                <button class="certificate-btn" id="feng-certificate">锋执法证</button>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <!-- 查询板块 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-search"></i> 查询板块</h2>
+                <div class="btn-grid">
+                    <a href="https://tyrz.gd.gov.cn/pscp/sso/static/?redirect_uri=https%3A%2F%2Famr.sz.gov.cn%2Fouter%2FentSelect%2FdoLogin.html&client_id=szjxgcxt" class="btn btn-query" target="_blank">
+                        <i class="fas fa-building"></i>
+                        <span>商事主体查询</span>
+                    </a>
+                    <a href="https://zwfw.nhc.gov.cn/cxx/" class="btn btn-query" target="_blank">
+                        <i class="fas fa-user-md"></i>
+                        <span>医务人员查询</span>
+                    </a>
+                    <a href="https://gjdzhzc.wsb003.cn/Home/CountryIndex" class="btn btn-query" target="_blank">
+                        <i class="fas fa-file-alt"></i>
+                        <span>电子化注册信息系统</span>
+                    </a>
+                    <a href="https://flk.npc.gov.cn/index.html" class="btn btn-query" target="_blank">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>国家法律法规数据库</span>
+                    </a>
+                    <a href="#" class="btn btn-query tooltip" data-tooltip="1.软件端运行&#10;2.插ukey：14400355-399FEE">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>医师执业注册查询</span>
+                    </a>
+                    <a href="#" class="btn btn-query tooltip" data-tooltip="1.软件端运行&#10;2.插ukey：M4400373-AE4CB2&#10;3.多多手机验证码">
+                        <i class="fas fa-hospital"></i>
+                        <span>机构端查询</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 常用系统 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-desktop"></i> 常用系统</h2>
+                <div class="btn-grid">
+                    <a href="https://wsjd.newhealth.com.cn:9080/szwsjdpt/" class="btn btn-register tooltip" target="_blank" data-tooltip="需先登陆vpn">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>139系统</span>
+                    </a>
+                    <a href="http://sx.amr.sz.gov.cn/szssj/logout.xhtml" class="btn btn-register" target="_blank">
+                        <i class="fas fa-random"></i>
+                        <span>双随机、一公开</span>
+                    </a>
+                    <a href="https://10.249.100.238/login.jsp" class="btn btn-register tooltip" target="_blank" data-tooltip="需政务内网电脑登陆">
+                        <i class="fas fa-city"></i>
+                        <span>市公示平台</span>
+                    </a>
+                    <a href="https://xtbg.gdzwfw.gov.cn/orgDev/rz/index.html?appid=wl2bee594e73&agentid=1000562&redirect_uri=https%3A%2F%2Fxtbg.gdzwfw.gov.cn%2F_tif_wwlocal_login_%2F%3Furl%3Dhttps%253A%252F%252Fxtbg.gdzwfw.gov.cn%252Fgdxzzfpc%252FApprLawCollection%252Findex.html&state=gdxzzfpc#/login?rURL=http%3A%2F%2F210.76.74.232%2FApprLawCollection%2Findex.html%23%2F" class="btn btn-register" target="_blank">
+                        <i class="fas fa-tv"></i>
+                        <span>省公示平台</span>
+                    </a>
+                    <a href="http://10.99.89.2:50011/module/zk/#/" class="btn btn-register tooltip" target="_blank" data-tooltip="需政务内网电脑登陆">
+                        <i class="fas fa-network-wired"></i>
+                        <span>网格系统</span>
+                    </a>
+                    <a href="#" class="btn btn-register">
+                        <i class="fas fa-notes-medical"></i>
+                        <span>传染病报告</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 共享文档 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-file-alt"></i> 共享文档</h2>
+                <div class="btn-grid">
+                    <a href="https://www.kdocs.cn/l/ciCQnTEphUN2" class="btn btn-supervise" target="_blank">
+                        <i class="fas fa-file-upload"></i>
+                        <span>送审登记（报中心）</span>
+                        <div class="btn-subtitle">叶科共享</div>
+                    </a>
+                    <a href="https://www.kdocs.cn/l/cnv3Aa30DVlZ" class="btn btn-supervise" target="_blank">
+                        <i class="fas fa-file-export"></i>
+                        <span>送审登记（报局）</span>
+                        <div class="btn-subtitle">姬科共享</div>
+                    </a>
+                    <a href="https://www.kdocs.cn/l/chEV3zzr8rLU" class="btn btn-supervise" target="_blank">
+                        <i class="fas fa-comments"></i>
+                        <span>疑难案线上讨论</span>
+                        <div class="btn-subtitle">姬科共享</div>
+                    </a>
+                    <a href="#" class="btn btn-supervise">
+                        <i class="fas fa-biohazard"></i>
+                        <span>医疗废物监督</span>
+                    </a>
+                    <a href="#" class="btn btn-supervise">
+                        <i class="fas fa-virus"></i>
+                        <span>传染病防控</span>
+                    </a>
+                    <a href="#" class="btn btn-supervise">
+                        <i class="fas fa-file-contract"></i>
+                        <span>放射诊疗监督</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 常用法律法规 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-gavel"></i> 常用法律法规</h2>
+                <div class="btn-grid">
+                    <a href="https://www.gd.gov.cn/zwgk/wjk/zcfgk/content/post_2532140.html" class="btn btn-punish" target="_blank">
+                        <i class="fas fa-book"></i>
+                        <span>特区医疗条例</span>
+                    </a>
+                    <a href="http://wjw.sz.gov.cn/gkmlpt/content/11/11986/post_11986549.html#25177" class="btn btn-punish" target="_blank">
+                        <i class="fas fa-balance-scale-left"></i>
+                        <span>市卫健自由裁量</span>
+                        <div class="btn-subtitle">深卫健规〔2025〕1号</div>
+                    </a>
+                    <a href="https://wsjkw.gd.gov.cn/zwgk_bmwj/content/post_4644516.html" class="btn btn-punish" target="_blank">
+                        <i class="fas fa-balance-scale-right"></i>
+                        <span>省自由裁量</span>
+                        <div class="btn-subtitle">粤卫规〔2024〕13号</div>
+                    </a>
+                    <a href="#" class="btn btn-punish">
+                        <i class="fas fa-money-check-alt"></i>
+                        <span>罚款收缴</span>
+                    </a>
+                    <a href="#" class="btn btn-punish">
+                        <i class="fas fa-undo-alt"></i>
+                        <span>行政复议</span>
+                    </a>
+                    <a href="#" class="btn btn-punish">
+                        <i class="fas fa-archive"></i>
+                        <span>处罚档案</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 数据统计 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> 数据统计</h2>
+                <div class="btn-grid">
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-procedures"></i>
+                        <span>医疗机构统计</span>
+                    </a>
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-user-injured"></i>
+                        <span>医疗事件统计</span>
+                    </a>
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-viruses"></i>
+                        <span>传染病统计</span>
+                    </a>
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-clipboard"></i>
+                        <span>监督检查统计</span>
+                    </a>
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>行政处罚统计</span>
+                    </a>
+                    <a href="#" class="btn btn-data">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>综合统计分析</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 档案管理 -->
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-archive"></i> 档案管理</h2>
+                <div class="btn-grid">
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-hospital-alt"></i>
+                        <span>医疗机构档案</span>
+                    </a>
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-id-card"></i>
+                        <span>医务人员档案</span>
+                    </a>
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-file-contract"></i>
+                        <span>许可证档案</span>
+                    </a>
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-folder-open"></i>
+                        <span>监督检查档案</span>
+                    </a>
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-folder"></i>
+                        <span>行政处罚档案</span>
+                    </a>
+                    <a href="#" class="btn btn-archive">
+                        <i class="fas fa-database"></i>
+                        <span>档案备份恢复</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>医疗卫生监督科工作管理系统 &copy; 2025 宝安区公共卫生服务福永分中心</p>
+            <div class="developer-info">系统设计：啊锋 0755-27398893</div>
+        </div>
+    </div>
+
+    <script>
+        // 为所有按钮添加点击效果（除了执法证号按钮）
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // 如果是占位链接，阻止默认行为并显示提示
+                if(this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    const functionName = this.querySelector('span').textContent;
+                    alert(`功能 "${functionName}" 正在开发中，敬请期待！`);
+                }
+            });
+        });
+        
+        // 为快速访问按钮添加点击效果（除了执法证号按钮）
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            if (btn.id !== 'certificate-btn') {
+                btn.addEventListener('click', function(e) {
+                    if(this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        const functionName = this.textContent.trim();
+                        alert(`功能 "${functionName}" 正在开发中，敬请期待！`);
+                    }
+                });
+            }
+        });
+        
+        // 执法证号功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const certificateBtn = document.getElementById('certificate-btn');
+            const certificateModal = document.getElementById('certificate-modal');
+            const qianCertificate = document.getElementById('qian-certificate');
+            const fengCertificate = document.getElementById('feng-certificate');
+            
+            // 点击执法证号按钮显示弹窗
+            certificateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                certificateModal.style.display = 'flex';
+            });
+            
+            // 点击钱执法证按钮
+            qianCertificate.addEventListener('click', function() {
+                window.open('http://210.76.74.232/zfdw/cert/cert-info?id=2d90a5d1872fa6bd0187ac0f50733eb9', '_blank');
+                certificateModal.style.display = 'none';
+            });
+            
+            // 点击锋执法证按钮
+            fengCertificate.addEventListener('click', function() {
+                window.open('http://210.76.74.232/zfdw/cert/cert-info?id=2d90a5d184f1f82c0186d9ab85157b84', '_blank');
+                certificateModal.style.display = 'none';
+            });
+            
+            // 点击弹窗外部关闭弹窗
+            certificateModal.addEventListener('click', function(e) {
+                if (e.target === certificateModal) {
+                    certificateModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
